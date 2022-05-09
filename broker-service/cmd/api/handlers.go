@@ -59,7 +59,6 @@ func (app *Config) authenticate(w http.ResponseWriter, a AuthPayload) {
 		app.errorJSON(w, err)
 		return
 	}
-
 	defer response.Body.Close()
 
 	if response.StatusCode == http.StatusUnauthorized {

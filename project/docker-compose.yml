@@ -8,7 +8,7 @@ services:
       dockerfile: ./broker-service.dockerfile
     restart: always
     ports:
-      - "8080:8081"
+      - "8080:80"
     deploy:
       mode: replicated
       replicas: 1
@@ -24,12 +24,12 @@ services:
       mode: replicated
       replicas: 1
     environment:
-      DSN: "host=postgres port=5432 user=postgres password=password dbname=users sslmode=disable timezone=UTC connect_timeout=5"
+      DSN: "host=postgres port=5432 dbname=users user=postgres password=postgres sslmode=disable timezone=UTC connect_timeout=5"
   
   postgres:
     image: 'postgres:14.0'
     ports:
-      - "5433:5432"
+      - "25432:5432"
     deploy:
       mode: replicated
       replicas: 1

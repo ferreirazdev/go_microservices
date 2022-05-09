@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -35,6 +36,7 @@ func (app *Config) Authenticate(w http.ResponseWriter, r *http.Request) {
 		Message: fmt.Sprintf("Logged in user %s", user.Email),
 		Data:    user,
 	}
+	log.Println(payload)
 
 	app.writeJSON(w, http.StatusAccepted, payload)
 }
