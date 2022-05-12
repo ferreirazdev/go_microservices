@@ -33,7 +33,7 @@ type LogEntry struct {
 	UpdatedAt time.Time `bson:"updated_at" json:"updated_at"`
 }
 
-func (l *LogEntry) Inset(entry LogEntry) error {
+func (l *LogEntry) Insert(entry LogEntry) error {
 	collection := client.Database("logs").Collection("logs")
 
 	_, err := collection.InsertOne(context.TODO(), LogEntry{
@@ -43,7 +43,7 @@ func (l *LogEntry) Inset(entry LogEntry) error {
 		UpdatedAt: time.Now(),
 	})
 	if err != nil {
-		log.Println("Error inserting int logs", err)
+		log.Println("Error inserting into logs:", err)
 		return err
 	}
 
@@ -61,7 +61,7 @@ func (l *LogEntry) All() ([]*LogEntry, error) {
 
 	cursor, err := collection.Find(context.TODO(), bson.D{}, opts)
 	if err != nil {
-		log.Println("Finding all docs errors:", err)
+		log.Println("Finding all docs error:", err)
 		return nil, err
 	}
 	defer cursor.Close(ctx)
@@ -73,7 +73,7 @@ func (l *LogEntry) All() ([]*LogEntry, error) {
 
 		err := cursor.Decode(&item)
 		if err != nil {
-			log.Println("Error deconding log into slice:", err)
+			log.Print("Error decoding log into slice:", err)
 			return nil, err
 		} else {
 			logs = append(logs, &item)
@@ -108,6 +108,7 @@ func (l *LogEntry) DropCollection() error {
 	defer cancel()
 
 	collection := client.Database("logs").Collection("logs")
+
 	if err := collection.Drop(ctx); err != nil {
 		return err
 	}
@@ -120,6 +121,7 @@ func (l *LogEntry) Update() (*mongo.UpdateResult, error) {
 	defer cancel()
 
 	collection := client.Database("logs").Collection("logs")
+
 	docID, err := primitive.ObjectIDFromHex(l.ID)
 	if err != nil {
 		return nil, err
