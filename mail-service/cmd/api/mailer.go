@@ -30,7 +30,7 @@ type Message struct {
 	DataMap     map[string]interface{}
 }
 
-func (m *Mail) SendSMTMessage(msg Message) error {
+func (m *Mail) SendSMTPMessage(msg Message) error {
 	if msg.From == "" {
 		msg.From = m.FromAddress
 	}
