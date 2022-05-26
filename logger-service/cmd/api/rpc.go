@@ -7,15 +7,14 @@ import (
 	"time"
 )
 
-type RPCServer struct {
-}
+type RPCServer struct{}
 
 type RPCPayload struct {
 	Name string
 	Data string
 }
 
-func (r *RPCServer) LongInfo(payload RPCPayload, resp *string) error {
+func (r *RPCServer) LogInfo(payload RPCPayload, resp *string) error {
 	collection := client.Database("logs").Collection("logs")
 	_, err := collection.InsertOne(context.TODO(), data.LogEntry{
 		Name:      payload.Name,
